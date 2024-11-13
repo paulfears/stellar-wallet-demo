@@ -1,11 +1,13 @@
 <script lang="ts">
+	import { Chasing } from 'svelte-loading-spinners';
 	import copy from 'copy-to-clipboard';
     import { Toast } from '$lib/utils/index';
 	//import { getAirDropData, claimClaimableBalance } from './../../lib/services/index.ts';
 	import { Card } from '@metastellar/ui-library';
 	import { callMetaStellar } from '$lib/callMetaStellar';
     import {dataPacket, isTestnet} from '$lib/wallet-store';
-    import {Horizon} from '@stellar/stellar-sdk';
+    
+   
     
     import {P, Button, Indicator, Tooltip} from "flowbite-svelte";
     import {onMount} from 'svelte';
@@ -50,10 +52,18 @@
         copy(text);
         Toast({type:'success', desc:"Address copied"});
     }
-    onMount(()=>{
+
+
+    onMount(async ()=>{
         iconSRC = getIdenticon($dataPacket.currentAddress);
-        callMetaStellar('fund', {})
+        $dataPacket = await callMetaStellar('getDataPacket', {});
+        if($dataPacket.testnetXLMBalance === "0"){
+            
+            callMetaStellar('fund', {testnet:true}).then(async ()=>{$dataPacket = await callMetaStellar('getDataPacket', {})});
+
+        }
     });
+
     let balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
     $: balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
     $: iconSRC = getIdenticon($dataPacket.currentAddress);
@@ -61,6 +71,7 @@
 </script>
 <br/>
 <br/>
+
 <Card shadow>
     <div>
         <div style="display:flex; flex-direction:row; justify-content:space-between;">

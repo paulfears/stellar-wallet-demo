@@ -19,6 +19,7 @@
     import {formatWalletAddValue, formatWalletAddress} from '$lib/utils/string'
     import { callMetaStellar } from '$lib/callMetaStellar';
     import WalletHeader from './WalletHeader.svelte';
+    import { Heading } from 'flowbite-svelte';
 
     export let currentView = "sendXLM";
 
@@ -45,62 +46,43 @@
     }
 
     //Fund the testnet Account if not Funded
-    onMount(()=>{
-        if($dataPacket.testnetXLMBalance === "0"){
-            
-            callMetaStellar('fund', {testnet:true}).then(
-                ()=>{
-                    callMetaStellar('getDataPacket', {}).then((dp:DataPacket)=>{$dataPacket = dp});
-                }
-            );
-        }
-    });
+
 </script>
 {#if $connected}
-<div>
-    <div id="midContainer"  class="uk-container">
-        <WalletHeader/>
-        <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
-            
-            <button on:click={()=>{setView('sendXLM')}} >
-                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
-                    <span>Send XLM</span>
-                </Card>
-            </button>
-            
-            <button on:click={()=>{setView('viewNFT')}}>
-                <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
-                    NFT
-                </Card>
-              </button>
-            <!--
-            <button on:click={()=>{setView('token')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center"  shadow>
-                    Token
-                </Card>
-            </button>
-            <button on:click={()=>{setView('airDrop')}}>
-                <Card class="py-4 lg:px-12  min-h-[80px] justify-center" shadow >
-                    AirDrop
-                </Card>
-            </button>
-            -->
+    {#if $dataPacket.currentAddress !== "null"}
+        <div>
+            <div id="midContainer"  class="uk-container">
+                <WalletHeader/>
+                <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
+                    
+                    <button on:click={()=>{setView('sendXLM')}} >
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
+                            <span>Send XLM</span>
+                        </Card>
+                    </button>
+                    
+                    <button on:click={()=>{setView('viewNFT')}}>
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
+                            NFT
+                        </Card>
+                    </button>
+                </div>
+                
+                <div class="mt-2">
+                    {#if currentView == 'sendXLM'}
+                        <SendXML/>
+                    {:else if currentView == 'viewNFT'}
+                        <NftView/>
+                    {/if}
+                </div>     
+            </div>
         </div>
+    {:else} <!--Connected but datapacket is still not loaded-->
         
-        <div class="mt-2">
-            {#if currentView == 'sendXLM'}
-                <SendXML/>
-            {:else if currentView == 'viewNFT'}
-                <NftView/>
-            {:else if currentView == 'token'}
-                <!--<Token/>-->
-            {:else if currentView == 'airDrop'}
-                <!--<AirDrop />-->
-            {/if}
-        </div>
-        
-    </div>
-</div>
+        <div style="margin-top:20%; display:flex; width:100%; height:100%; justify-content:center;">    
+            <Chasing/>
+        </div>  
+    {/if}
 {/if}
 
 {#if !$connected}
