@@ -4,22 +4,14 @@
     import {Card} from '@metastellar/ui-library';
     import {Chasing} from 'svelte-loading-spinners'
     import copy from "copy-to-clipboard";
-    
     import {connected, dataPacket, isTestnet} from '$lib/wallet-store';
-    import type {DataPacket} from '$lib/wallet-store';
-    import {onMount} from 'svelte';
-    import {FileCopyAltOutline} from 'flowbite-svelte-icons';
-    
-    import { env } from "$lib/env";
 	import {Toast as toast} from "$lib/utils"
     import NftView from '../components/Assets/nftView.svelte';
     import SendXML from '../components/XML/SendXml.svelte';
-    import Token from '../components/Assets/token.svelte';
-    import AirDrop from '../components/Assets/airDrop.svelte';
-    import {formatWalletAddValue, formatWalletAddress} from '$lib/utils/string'
-    import { callMetaStellar } from '$lib/callMetaStellar';
-    import WalletHeader from './WalletHeader.svelte';
-    import { Heading } from 'flowbite-svelte';
+
+    import AssetsPanel from './AssetsPanel.svelte';
+    import WalletCard from './WalletCard.svelte';
+    import Transactions from './transactions.svelte';
 
     export let currentView = "sendXLM";
 
@@ -52,7 +44,7 @@
     {#if $dataPacket.currentAddress !== "null"}
         <div>
             <div id="midContainer"  class="uk-container">
-                <WalletHeader/>
+                <WalletCard/>
                 <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
                     
                     <button on:click={()=>{setView('sendXLM')}} >
@@ -66,6 +58,16 @@
                             NFT
                         </Card>
                     </button>
+                    <button on:click={()=>{setView('assets')}}>
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
+                            Assets
+                        </Card>
+                    </button>
+                    <button on:click={()=>{setView('transactions')}}>
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
+                            Transaction explorer
+                        </Card>
+                    </button>
                 </div>
                 
                 <div class="mt-2">
@@ -73,6 +75,10 @@
                         <SendXML/>
                     {:else if currentView == 'viewNFT'}
                         <NftView/>
+                    {:else if currentView == 'assets'}
+                        <AssetsPanel/>
+                    {:else if currentView == 'transactions'}
+                        <Transactions/>
                     {/if}
                 </div>     
             </div>
