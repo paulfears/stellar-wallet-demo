@@ -1,11 +1,12 @@
 <script>
+	
 	import { dataPacket, isTestnet} from '$lib/wallet-store';
 	
 	
     import Editor from '$lib/components/MetaStellarEditor/MetaStellarEditor.svelte';
     import TypescriptContainer from "$lib/components/TypescriptContainer/TypescriptContainer.svelte";
     
-    import {P, Heading,} from 'flowbite-svelte';
+    import {P, Heading, Card} from 'flowbite-svelte';
     
     let MetaStellar_String = //This is the callMetaStellar function that should also be prepended to any executed code
     `
@@ -150,7 +151,7 @@ async function callMetaStellar(method, params){
 
 
 <br/>
-<Heading >Step1: Copy the callMetaStellarFunction</Heading>
+<h1 >Step1: Copy the callMetaStellarFunction</h1>
 <TypescriptContainer code={MetaStellar_String} desc={callMetastellarDesc}/>
 <br/>
 <br/>
@@ -164,18 +165,20 @@ async function callMetaStellar(method, params){
 </div>
 <br/>
 <br/>
+
 <!--Connect Editor-->
 <Editor  code={ConnectEditorString}  >
-    <Heading>Connecting Stellar + Metamask + Your App</Heading>
+    <h1>Connecting Stellar + Metamask + Your App</h1>
     <h2>callMetaStellar('connect')</h2>
     <br/>
     The Wallet must be connected before any other methods can be called. The wallet will auto-install if it is not already!
 </Editor>
+
 <br/>
 <br/>
 <!--getAddress Editor-->
 <Editor  code={getAddressString} >
-    <Heading>Getting the Address</Heading>
+    <h1>Getting the Address</h1>
     <h2>callMetaStellar('getAddress')</h2>
     <br/>
     The getAddress method returns the address of the currentAccount. The wallet supports multiple accounts, but only one can be connected at a time. this gets the current one.
@@ -184,7 +187,7 @@ async function callMetaStellar(method, params){
 <br/>
 <!--getDataPacket Editor-->
 <Editor  code={getDataPacketString}>
-    <Heading>Getting a dataPacket</Heading>
+    <h1>Getting a dataPacket</h1>
     <h2>callMetaStellar('getDataPacket')</h2>
     <br/>
     Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
@@ -194,7 +197,7 @@ async function callMetaStellar(method, params){
 <!--SignTransaction Editor-->
 <Editor  code={signTxnString}>
     
-    <Heading>Signing a Transaction</Heading>
+    <h1>Signing a Transaction</h1>
     <h2>{`callMetaStellar('signTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
     <br/>
     Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
@@ -202,7 +205,7 @@ async function callMetaStellar(method, params){
 
 <Editor  code={signAndSubmitTransactionString}>
     
-    <Heading>Signing and Submiting Transaction</Heading>
+    <h1>Signing and Submiting Transaction</h1>
     <h2>{`callMetaStellar('signAndSubmitTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
     <br/>
     Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
@@ -210,25 +213,16 @@ async function callMetaStellar(method, params){
 
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Sixtyfour+Convergence&display=swap');
-    h1 {
-  font-family: "Sixtyfour Convergence", sans-serif;
-  font-optical-sizing: auto;
-  font-weight: 400;
-  font-style: normal;
-  font-variation-settings:
-    "BLED" 0,
-    "SCAN" 0,
-    "XELA" 0,
-    "YELA" 0;
-}
+   
 
+h1{
+    text-align: left;
+    font-size:150%;
+    margin-top:1em;
+}
 h2{
-    padding:10px;
-    margin-top: 10px;
-    font-size: x-large;
-    color:aquamarine;
-    background-color: black;
+    margin-top: 5px;
+    margin-bottom: 10px;
 }
 
 
