@@ -151,6 +151,7 @@ async function callMetaStellar(method, params){
 
 
 <br/>
+<div class='simple-card'>
 <h1 >Step1: Copy the callMetaStellarFunction</h1>
 <TypescriptContainer code={MetaStellar_String} desc={callMetastellarDesc}/>
 <br/>
@@ -163,53 +164,78 @@ async function callMetaStellar(method, params){
     We beleave the best thing to do is to copy the callMetaStellar Function into a utils folder on your application. 
     </div>
 </div>
+</div>
 <br/>
 <br/>
 
 <!--Connect Editor-->
-<Editor  code={ConnectEditorString}  >
-    <h1>Connecting Stellar + Metamask + Your App</h1>
-    <h2>callMetaStellar('connect')</h2>
-    <br/>
-    The Wallet must be connected before any other methods can be called. The wallet will auto-install if it is not already!
-</Editor>
+<div class='simple-card'>
+    <Editor  code={ConnectEditorString}  >
+        <h1>Connecting Stellar + Metamask + Your App</h1>
+        <h2>callMetaStellar('connect')</h2>
+        <br/>
+        The Wallet must be connected before any other methods can be called. The wallet will auto-install if it is not already!
+    </Editor>
+</div>
 
 <br/>
 <br/>
+
 <!--getAddress Editor-->
-<Editor  code={getAddressString} >
-    <h1>Getting the Address</h1>
-    <h2>callMetaStellar('getAddress')</h2>
-    <br/>
-    The getAddress method returns the address of the currentAccount. The wallet supports multiple accounts, but only one can be connected at a time. this gets the current one.
-</Editor>
-<br/>
-<br/>
-<!--getDataPacket Editor-->
-<Editor  code={getDataPacketString}>
-    <h1>Getting a dataPacket</h1>
-    <h2>callMetaStellar('getDataPacket')</h2>
-    <br/>
-    Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
-</Editor>
-<br/>
-<br/>
-<!--SignTransaction Editor-->
-<Editor  code={signTxnString}>
-    
-    <h1>Signing a Transaction</h1>
-    <h2>{`callMetaStellar('signTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
-    <br/>
-    Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
-</Editor>
+<div class='simple-card'>
+    <Editor  code={getAddressString} >
+        <h1>Getting the Address</h1>
+        <h2>callMetaStellar('getAddress')</h2>
+        <br/>
+        The getAddress method returns the address of the currentAccount. The wallet supports multiple accounts, but only one can be connected at a time. this gets the current one.
+    </Editor>
+</div>
 
-<Editor  code={signAndSubmitTransactionString}>
-    
-    <h1>Signing and Submiting Transaction</h1>
-    <h2>{`callMetaStellar('signAndSubmitTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
-    <br/>
-    Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
-</Editor>
+
+<br/>
+<br/>
+
+
+<!--getDataPacket Editor-->
+<div class='simple-card'>
+    <Editor  code={getDataPacketString}>
+        <h1>Getting a dataPacket</h1>
+        <h2>callMetaStellar('getDataPacket')</h2>
+        <br/>
+        Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
+    </Editor>
+</div>
+
+
+<br/>
+<br/>
+
+
+<!--SignTransaction Editor-->
+<div class='simple-card'>
+    <Editor  code={signTxnString}>
+        
+        <h1>Signing a Transaction</h1>
+        <h2>{`callMetaStellar('signTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
+        <br/>
+        Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
+    </Editor>
+</div>
+
+<br/>
+<br/>
+
+
+<!--SignandSubmitTransaction Editor-->
+<div class='simple-card'>
+    <Editor  code={signAndSubmitTransactionString}>
+        
+        <h1>Signing and Submiting Transaction</h1>
+        <h2>{`callMetaStellar('signAndSubmitTransaction', {transaction: xdr-as-string , testnet: true })`}</h2>
+        <br/>
+        Most of the time it is useful to get an overview of a users wallet state. To do this simply call the getDataPacket function. This returns the current Address along with the mainnet and testnet balance a list of assets for the current address and the wallet name and federation address if one exists.
+    </Editor>
+</div>
 
 
 <style>
@@ -225,5 +251,7 @@ h2{
     margin-bottom: 10px;
 }
 
-
+.simple-card{
+    background-color:white; border-radius: 6px; padding:2em; margin:1em;
+}
 </style>

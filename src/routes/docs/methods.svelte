@@ -78,83 +78,113 @@ let openSendXLM = `callMetaStellar('openSendXLM');`;
 
 </script>
 
-<h1>GetAddress</h1>
-<h2>callMetaStellar('getAddress')</h2>
-<Editor code={getAddress}/>
+<div class='simple-card'>
+    <h1>GetAddress</h1>
+    <h2>callMetaStellar('getAddress')</h2>
+    <Editor code={getAddress}/>
+</div>
 
+<div class='simple-card'>
+    <h1>getDataPacket</h1>
+    <h2>callMetaStellar('getDataPacket')</h2>
+    <Editor code={getDataPacket}/>
+</div>
 
-<h1>getDataPacket</h1>
-<h2>callMetaStellar('getDataPacket')</h2>
-<Editor code={getDataPacket}/>
+<div class='simple-card'>
+    <h1>showAddress</h1>
+    <h2>callMetaStellar('showAddress')</h2>
+    <Editor code={showAddress}/>
+</div>
 
-<h1>showAddress</h1>
-<h2>callMetaStellar('showAddress')</h2>
-<Editor code={showAddress}/>
+<div class='simple-card'>
+    <h1>createAccount</h1>
+    <h2>{`callMetaStellar('createAccount', {'name':'new-account-name'})`}</h2>
+    <Editor code={createAccount}/>
+</div>
 
+<div class='simple-card'>
+    <h1>listAccounts</h1>
+    <h2>{`callMetaStellar('listAccounts')`}</h2>
+    <Editor code={listAccounts}/>
+</div>
 
-<h1>createAccount</h1>
-<h2>{`callMetaStellar('createAccount', {'name':'new-account-name'})`}</h2>
-<Editor code={createAccount}/>
+<div class='simple-card'>
+    <h1>renameAccount</h1>
+    <h2>{`callMetaStellar('renameAccount', {address:'account-address', name:'new-name'})`}</h2>
+    <Editor code={renameAccount}/>
+</div>
 
+<div class='simple-card'>
+    <h1>importAccount</h1>
+    <h2>{`callMetaStellar('importAccount')`}</h2>
+    <Editor code={importAccount}/>
+</div>
 
-<h1>listAccounts</h1>
-<h2>{`callMetaStellar('listAccounts')`}</h2>
-<Editor code={listAccounts}/>
+<div class='simple-card'>
+    <h1>fund</h1>
+    <h2>{`callMetaStellar('fund')`}</h2>
+    <Editor code={fund}/>
+</div>
 
-<h1>renameAccount</h1>
-<h2>{`callMetaStellar('renameAccount', {address:'account-address', name:'new-name'})`}</h2>
-<Editor code={renameAccount}/>
+<div class='simple-card'>
+    <h1>getFederationName</h1>
+    <h2>{`callMetaStellar('getFederationName')`}</h2>
+    <Editor code={getFederationName}>Gets the federation name of the current account returns null if there is none</Editor>
+</div>
 
-<h1>importAccount</h1>
-<h2>{`callMetaStellar('importAccount')`}</h2>
-<Editor code={importAccount}/>
+<div class='simple-card'>
+    <h1>lookUpFedAccountByAddress</h1>
+    <h2>{`callMetaStellar("lookUpFedAccountByAddress", {"address":'metastellarAddress');`}</h2>
+    <Editor code={lookUpFedAccountByAddress}/>
+</div>
 
+<div class='simple-card'>
+    <h1>lookUpFedAccountByName</h1>
+    <h2>{`callMetaStellar("lookUpFedAccountByName", {"url":'gloosy*metastellar.io');`}</h2>
+    <Editor code={lookUpFedAccountByName}/>
+</div>
 
-<h1>fund</h1>
-<h2>{`callMetaStellar('fund')`}</h2>
-<Editor code={fund}/>
+<div class='simple-card'>
+    <h1>getBalance</h1>
+    <h2>{`callMetaStellar('getBalance', {testnet:true})`}</h2>
+    <Editor code={getBalance}/>
+</div>
 
+<div class='simple-card'>
+    <h1>getAssets</h1>
+    <h2>{`callMetaStellar('getAssets')`}</h2>
+    <Editor code={getAssets}/>
+</div>
 
-<h1>getFederationName</h1>
-<h2>{`callMetaStellar('getFederationName')`}</h2>
-<Editor code={getFederationName}>Gets the federation name of the current account returns null if there is none</Editor>
+<div class='simple-card'>
+    <h1>dispPrivateKey</h1>
+    <h2>{`callMetaStellar('dispPrivateKey')`}</h2>
+    <Editor code={dispPrivateKey}/>
+</div>
 
-<h1>lookUpFedAccountByAddress</h1>
-<h2>{`callMetaStellar("lookUpFedAccountByAddress", {"address":'metastellarAddress');`}</h2>
-<Editor code={lookUpFedAccountByAddress}/>
+<div class='simple-card'>
+    <h1>getAccountInfo</h1>
+    <h2>{`callMetaStellar('getAccountInfo', {testnet:true})`}</h2>
+    <Editor code={getAccountInfo}/>
+</div>
 
-<h1>lookUpFedAccountByName</h1>
-<h2>{`callMetaStellar("lookUpFedAccountByName", {"url":'gloosy*metastellar.io');`}</h2>
-<Editor code={lookUpFedAccountByName}/>
+<div class='simple-card'>
+    <h1>transfer</h1>
+    <h2>{`callMetaStellar('transfer', {to:'GB2O6R5JUJGJNXN6MD3TNBL4XJU2PFCK7YTWZJXYOR6OBEE2E46MIYEM', amount:'100', testnet:true})`}</h2>
+    <Editor code={transfer}/>
+</div>
 
-<h1>getBalance</h1>
-<h2>{`callMetaStellar('getBalance', {testnet:true})`}</h2>
-<Editor code={getBalance}/>
+<div class='simple-card'>
+    <h1>createFederationAccount</h1>
+    <h2>{`callMetaStellar('createFederationAccount')`}</h2>
+    <Editor code={createFederationAccount}/>
+</div>
 
-<h1>getAssets</h1>
-<h2>{`callMetaStellar('getAssets')`}</h2>
-<Editor code={getAssets}/>
-
-<h1>dispPrivateKey</h1>
-<h2>{`callMetaStellar('dispPrivateKey')`}</h2>
-<Editor code={dispPrivateKey}/>
-
-
-<h1>getAccountInfo</h1>
-<h2>{`callMetaStellar('getAccountInfo', {testnet:true})`}</h2>
-<Editor code={getAccountInfo}/>
-
-<h1>transfer</h1>
-<h2>{`callMetaStellar('transfer', {to:'GB2O6R5JUJGJNXN6MD3TNBL4XJU2PFCK7YTWZJXYOR6OBEE2E46MIYEM', amount:'100', testnet:true})`}</h2>
-<Editor code={transfer}/>
-
-<h1>createFederationAccount</h1>
-<h2>{`callMetaStellar('createFederationAccount')`}</h2>
-<Editor code={createFederationAccount}/>
-
-<h1>openSendXLM</h1>
-<h2>{`callMetaStellar('openSendXLM')`}</h2>
-<Editor code={openSendXLM}/>
+<div class='simple-card'>
+    <h1>openSendXLM</h1>
+    <h2>{`callMetaStellar('openSendXLM')`}</h2>
+    <Editor code={openSendXLM}/>
+</div>
 
 <style>
 h1{
@@ -165,4 +195,6 @@ h1{
 h2{
     margin-bottom: 10px;
 }
+
+
 </style>

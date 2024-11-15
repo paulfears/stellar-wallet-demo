@@ -64,7 +64,7 @@
 <div class="uk-container">
     <br/>
     <div id='home-grid'>
-        <div>
+        <div class='homeCard'>
             <a href="/wallet">
             
                 <Card class="py-7 px-5 w-72 h-72" shadow>
@@ -73,32 +73,33 @@
                 </Card>
             </a>
         </div>
-        <div>
-        <a href="/docs">
-        <div>
-            <Card class="py-7 px-5 w-72 h-72" shadow>
-                <p>Docs</p>
-                <img style="padding:1em;" alt="drawing of a clipboard and computer" src={DocsIcon}/>
-            </Card>
+
+        <div class='homeCard'>
+            <a href="/docs">
+                <div>
+                    <Card class="py-7 px-5 w-72 h-72" shadow>
+                        <p>Docs</p>
+                        <img style="padding:1em;" alt="drawing of a clipboard and computer" src={DocsIcon}/>
+                    </Card>
+                </div>
+            </a>
         </div>
-        </a>
-    </div>
-        <a href="/faq">
-            <div>
+        <div class='homeCard'>
+            <a href="/faq">
                 <Card class="py-7 px-5 w-72 h-72" shadow>
                     <p>FAQ</p>
                     <img style="padding:1em;" alt="A drawing of a conversation with a chatbot" src={FAQIcon}/>
                 </Card>
-            </div>
-        </a>
-        <a href="/transactionBuilder">
-            <div>
+            </a>
+        </div>
+        <div class='homeCard'>
+            <a href="/transactionBuilder">   
                 <Card class="py-7 px-5 w-72 h-72" shadow>
                     <p>Stellar Lab 2.0</p>
                     <img style="padding:1em;" alt="A drawing of a blowtorch and a science flask" src={labIcon}/>
                 </Card>
-            </div>
-        </a>
+            </a>
+        </div>
     </div>
 </div>
 
@@ -136,20 +137,23 @@
         animation: both 3s float infinite;
     } */
 
+
+
+    .homeCard:hover{
+        animation: float 0.3s ease forwards;
+    }
+
     @keyframes float {
 	0% {
 		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
 		transform: translatey(0px) scale(1);
 	}
-	50% {
+	100% {
 		box-shadow: 0 25px 15px 0px rgba(0,0,0,0.2);
 		transform: translatey(-5px) scale(1.01);
 
 	}
-	100% {
-		box-shadow: 0 5px 15px 0px rgba(0,0,0,0.6);
-		transform: translatey(0px) scale(1);
-	}
+
 }
 
     .uk-container:has(.ms-frame:hover) .ms-frame:not(:hover) {
