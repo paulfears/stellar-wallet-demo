@@ -5,10 +5,10 @@
     import { env } from "$lib/env";
     import {stellar_rpc_mainnet_endpoint} from '$lib/constants'
 
-    import WalletIcon from '$lib/images/front-icons/wallet.jpeg';
-    import DocsIcon from '$lib/images/front-icons/docs.jpeg';
-    import FAQIcon from '$lib/images/front-icons/faq.jpeg';
-    import labIcon from '$lib/images/front-icons/lab.jpeg'; 
+    import WalletIcon from '$lib/images/front-icons/wallet.png';
+    import DocsIcon from '$lib/images/front-icons/docs.png';
+    import FAQIcon from '$lib/images/front-icons/faq.png';
+    import labIcon from '$lib/images/front-icons/lab.png'; 
 
 
     const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
@@ -67,35 +67,35 @@
         <div>
             <a href="/wallet">
             
-                <Card class="py-7 px-5 w-48 h-48" shadow>
+                <Card class="py-7 px-5 w-72 h-72" shadow>
                     <p>Wallet</p>
-                    <img alt="drawing of a wallet" src={WalletIcon}/>
+                    <img style="padding:1em;" alt="drawing of a wallet" src={WalletIcon}/>
                 </Card>
             </a>
         </div>
         <div>
         <a href="/docs">
         <div>
-            <Card class="py-7 px-5 w-48 h-48" shadow>
+            <Card class="py-7 px-5 w-72 h-72" shadow>
                 <p>Docs</p>
-                <img alt="drawing of a clipboard and computer" src={DocsIcon}/>
+                <img style="padding:1em;" alt="drawing of a clipboard and computer" src={DocsIcon}/>
             </Card>
         </div>
         </a>
     </div>
         <a href="/faq">
             <div>
-                <Card class="py-7 px-5 w-48 h-48" shadow>
+                <Card class="py-7 px-5 w-72 h-72" shadow>
                     <p>FAQ</p>
-                    <img alt="A drawing of a conversation with a chatbot" src={FAQIcon}/>
+                    <img style="padding:1em;" alt="A drawing of a conversation with a chatbot" src={FAQIcon}/>
                 </Card>
             </div>
         </a>
         <a href="/transactionBuilder">
             <div>
-                <Card class="py-7 px-5 w-48 h-48" shadow>
+                <Card class="py-7 px-5 w-72 h-72" shadow>
                     <p>Stellar Lab 2.0</p>
-                    <img alt="A drawing of a blowtorch and a science flask" src={labIcon}/>
+                    <img style="padding:1em;" alt="A drawing of a blowtorch and a science flask" src={labIcon}/>
                 </Card>
             </div>
         </a>
