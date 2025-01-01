@@ -72,7 +72,7 @@
 <br/>
 <br/>
 
-<Card shadow>
+<Card style="margin-bottom:2em;" shadow>
     <div>
         <div style="display:flex; flex-direction:row; justify-content:space-between;">
             <div style="display:flex; flex-gap:3;">

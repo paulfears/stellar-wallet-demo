@@ -9,7 +9,7 @@
 	let scroll = 'auto';
 	import ChatBox from './components/Chat/index.svelte';
 </script>
-<svelte:window on:error={(e)=>alert(JSON.stringify(e))}/>
+
 <div class="app">
 	<Header />
 	<main >

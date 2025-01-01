@@ -6,10 +6,9 @@
     import copy from "copy-to-clipboard";
     import {connected, dataPacket, isTestnet} from '$lib/wallet-store';
 	import {Toast as toast} from "$lib/utils"
-    import NftView from '../components/Assets/nftView.svelte';
     import SendXML from '../components/XML/SendXml.svelte';
-
-    import AssetsPanel from './AssetsPanel.svelte';
+    import { Button } from 'flowbite-svelte';
+    import AssetsPanel from './assets/AssetsPanel.svelte';
     import WalletCard from './WalletCard.svelte';
     import Transactions from './transactions.svelte';
 
@@ -31,11 +30,7 @@
         console.log('view ', currentView);
     }
     
-    const onCopy = (text:string) => {
-        // if (!$connected) {alert('plz connect to wallet'); return}
-        copy(text);
-        toast({type:'info', desc:'Copied!'});
-    }
+
 
     //Fund the testnet Account if not Funded
 
@@ -45,36 +40,30 @@
         <div>
             <div id="midContainer"  class="uk-container">
                 <WalletCard/>
-                <div class="grid md:grid-cols-4 sm:grid-cols-2 mt-2 gap-3">
+                
                     
                     <button on:click={()=>{setView('sendXLM')}} >
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow>
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'sendXLM'}>
                             <span>Send XLM</span>
                         </Card>
                     </button>
                     
-                    <button on:click={()=>{setView('viewNFT')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
-                            NFT
-                        </Card>
-                    </button>
+                    
                     <button on:click={()=>{setView('assets')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'assets'} >
                             Assets
                         </Card>
                     </button>
                     <button on:click={()=>{setView('transactions')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow >
+                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'transactions'} >
                             Transaction explorer
                         </Card>
                     </button>
-                </div>
+                
                 
                 <div class="mt-2">
                     {#if currentView == 'sendXLM'}
                         <SendXML/>
-                    {:else if currentView == 'viewNFT'}
-                        <NftView/>
                     {:else if currentView == 'assets'}
                         <AssetsPanel/>
                     {:else if currentView == 'transactions'}
