@@ -2,7 +2,7 @@
 	
 	import ConnectDisp from '$lib/components/connectDisp/ConnectDisp.svelte';
     import {Card} from '@metastellar/ui-library';
-    import {Chasing} from 'svelte-loading-spinners'
+    import {Circle2} from 'svelte-loading-spinners'
     import {connected, dataPacket, isTestnet, currentView} from '$lib/wallet-store';
 	
     import SendXML from '../components/XML/SendXml.svelte';
@@ -62,9 +62,12 @@
         </div>
     {:else} <!--Connected but datapacket is still not loaded-->
         
-        <div style="margin-top:20%; display:flex; width:100%; height:100%; justify-content:center;">    
-            <Chasing/>
-        </div>  
+    <div style="display:flex; height:100%; transform:translateY(50%); text-align:center; align-content:center; flex-direction:column; justify-content:center;">
+        <p>Connecting to MetaMask</p>
+        <div style="display:flex; justify-content:center; padding:30px; margin:auto;">
+        <Circle2 size={100}/>
+        </div>
+    </div>
     {/if}
 {/if}
 
