@@ -3,16 +3,17 @@
 	import ConnectDisp from '$lib/components/connectDisp/ConnectDisp.svelte';
     import {Card} from '@metastellar/ui-library';
     import {Chasing} from 'svelte-loading-spinners'
-    import copy from "copy-to-clipboard";
-    import {connected, dataPacket, isTestnet} from '$lib/wallet-store';
-	import {Toast as toast} from "$lib/utils"
+    import {connected, dataPacket, isTestnet, currentView} from '$lib/wallet-store';
+	
     import SendXML from '../components/XML/SendXml.svelte';
-    import { Button } from 'flowbite-svelte';
+    
     import AssetsPanel from './assets/AssetsPanel.svelte';
     import WalletCard from './WalletCard.svelte';
+    import SendPanel from './send/sendPanel.svelte';
     import Transactions from './transactions.svelte';
+    import SwapPanel from './swap/swapPanel.svelte';
 
-    export let currentView = "sendXLM";
+    
 
 //   let xlmBalance:number = 0;
     // async function getWalletBallance() {
@@ -33,41 +34,28 @@
 
 
     //Fund the testnet Account if not Funded
-
+    $: $currentView = $currentView;
 </script>
 {#if $connected}
     {#if $dataPacket.currentAddress !== "null"}
         <div>
-            <div id="midContainer"  class="uk-container">
+            <div  class="uk-container">
                 <WalletCard/>
                 
                     
-                    <button on:click={()=>{setView('sendXLM')}} >
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'sendXLM'}>
-                            <span>Send XLM</span>
-                        </Card>
-                    </button>
-                    
-                    
-                    <button on:click={()=>{setView('assets')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'assets'} >
-                            Assets
-                        </Card>
-                    </button>
-                    <button on:click={()=>{setView('transactions')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'transactions'} >
-                            Transaction explorer
-                        </Card>
-                    </button>
                 
                 
                 <div class="mt-2">
-                    {#if currentView == 'sendXLM'}
+                    {#if $currentView == 'sendXLM'}
                         <SendXML/>
-                    {:else if currentView == 'assets'}
+                    {:else if $currentView == 'assets'}
                         <AssetsPanel/>
-                    {:else if currentView == 'transactions'}
+                    {:else if $currentView == 'transactions'}
                         <Transactions/>
+                    {:else if $currentView == 'send'}
+                        <SendPanel/>
+                    {:else if $currentView == 'swap'}
+                        <SwapPanel/>
                     {/if}
                 </div>     
             </div>

@@ -34,7 +34,7 @@
 		"@codemirror/state": "^6.4.1",
 		"@fullhuman/postcss-purgecss": "^6.0.0",
 		"@metastellar/ui-library": "^0.0.19",
-		"@stellar/stellar-sdk": "^12.0.0-rc.3",
+		"@stellar/stellar-sdk": "^13.1.0",
 		"@sveltejs/adapter-netlify": "^4.3.3",
 		"@sveltejs/adapter-vercel": "^5.4.5",
 		"ace-builds": "^1.36.2",

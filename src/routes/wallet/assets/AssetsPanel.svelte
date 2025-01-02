@@ -7,7 +7,7 @@
     import {isTestnet, dataPacket} from '$lib/wallet-store';
     import type { DataPacket } from '$lib/wallet-store';
     import { callMetaStellar } from '$lib/callMetaStellar';
-    import { testnet } from '../../../store';
+    
     import copyicon from '$lib/images/copy.svg';
     import copy from "copy-to-clipboard";
     let currentAsset = Asset.native();
@@ -57,7 +57,8 @@
     
 
     console.log($dataPacket.testnetAssets);
-    
+    let assets = [];
+    $: $isTestnet?assets = $dataPacket.testnetAssets: assets = $dataPacket.mainnetAssets
 </script>
 
 <div class='shadow-card'>
@@ -71,49 +72,29 @@
         <div>
             <Toast bind:toastStatus={toastStatus}>Copied to clipboard</Toast>
             <div style="overflow-y:scroll; height:400px;">
-                {#if $isTestnet}
-                    {#each $dataPacket.testnetAssets as asset}
-                    <Card style="width:450px;">
-                        <P size="sm">{asset.asset_code}</P>
+                {#each assets as asset}
+                <Card style="width:450px;">
+                    <P size="sm">{asset.asset_code}</P>
+                    
+                    {#if asset.asset_issuer !== undefined && asset.asset_issuer !== 'native'}
+                        <div style="display:flex; gap:5px;">
+                            <P size="xs">{chopAddress(asset.asset_issuer)}</P>
+                            <Popover title={asset.asset_code}>{asset.asset_issuer}</Popover>
+                            <img src={copyicon} alt="copy" on:click={ezCopy(asset.asset_issuer)} style="width:20px; height:20px; cursor:pointer;"/>
+                        </div>
                         
-                        {#if asset.asset_issuer !== undefined}
-                            <div style="display:flex; gap:5px;">
-                                <P size="xs">{chopAddress(asset.asset_issuer)}</P>
-                                <Popover title={asset.asset_code}>{asset.asset_issuer}</Popover>
-                                <img src={copyicon} alt="copy" on:click={ezCopy(asset.asset_issuer)} style="width:20px; height:20px; cursor:pointer;"/>
-                            </div>
-                            
-                            
-                        {/if}
-                        <P size="sm">{asset.balance} {asset.asset_code}</P>
-                    </Card>  
-                    {/each}
-                {:else}
-                    {#each $dataPacket.mainnetAssets as asset}
-                    <Card style="width:450px;">
-                        <P size="sm">{asset.asset_code}</P>
                         
-                        {#if asset.asset_issuer !== undefined && asset.asset_issuer!=='native'}
-                            <div style="display:flex; gap:5px;">
-                                <P size="xs">{chopAddress(asset.asset_issuer)}</P>
-                                <Popover title={asset.asset_code}>{asset.asset_issuer}</Popover>
-                                <img src={copyicon} alt="copy" style="width:20px; height:20px; cursor:pointer;" on:click={ezCopy(asset.asset_issuer)}/>
-                            </div>
-                            
-                        {/if}
-                        <P size="sm">{asset.balance} {asset.asset_code}</P>
-                    </Card>  
-                    {/each}
-                {/if}
+                    {/if}
+                    <P size="sm">{asset.balance} {asset.asset_code}</P>
+                </Card>  
+                {/each}
             </div>
         </div>
         <div>
         <Card>
             <P size="lg">Add Assets</P>
-            
             <P size="xl">{currentAsset.code}</P>
             {#if currentAsset.issuer !== undefined}
-                
                 <P size="xs">{chopAddress(currentAsset.issuer)}</P>
             {/if}
             <AssetSelect network={$isTestnet?'testnet':'mainnet'} bind:selectedAsset={currentAsset}/>

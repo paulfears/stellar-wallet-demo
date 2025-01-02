@@ -60,3 +60,4 @@ export const dataPacket:Writable<DataPacket> = writable(nullDataPacket);
 export const isTestnet:Writable<boolean> = writable(true);
 export const connected:Writable<boolean> = writable(false);
 
+export const currentView:Writable<string> = writable("sendXLM");
