@@ -89,7 +89,7 @@ async function swap(){
     console.log(swapTransaction);
     const liveXDR = swapTransaction.build().toXDR();
     console.log(liveXDR);
-    let output = await callMetaStellar('signAndSubmitTransaction', {xdr:liveXDR, testnet:$isTestnet});
+    let output = await callMetaStellar('signAndSubmitTransaction', {transaction:liveXDR, testnet:$isTestnet});
     return output;
 }
 
@@ -109,6 +109,7 @@ async function generateSwap(inputAsset:StellarSdk.Asset, inputAmount:string, out
     const account = await horizon.loadAccount(currentAddress);
     let trustLimit = 0;
     let lineExists = false;
+    console.log("checking balances");
     for(let i = 0; i < account.balances.length; i++){
                 let balance = account.balances[i];
                 if(
@@ -117,7 +118,7 @@ async function generateSwap(inputAsset:StellarSdk.Asset, inputAmount:string, out
                     && balance.asset_issuer === outputAsset.issuer
                 ){
                     let limit = parseFloat(balance.limit);
-                    let lineExists = true;
+                    lineExists = true;
                     let balance = parseFloat(balance.balance);
                     if(limit-balance < parseFloat(outputMin)+1000){
                         trustLimit = parseFloat(outputMin)+(limit-balance)+1000;
