@@ -90,6 +90,7 @@ async function swap(){
     const liveXDR = swapTransaction.build().toXDR();
     console.log(liveXDR);
     let output = await callMetaStellar('signAndSubmitTransaction', {transaction:liveXDR, testnet:$isTestnet});
+    console.log(output);
     return output;
 }
 
@@ -117,11 +118,15 @@ async function generateSwap(inputAsset:StellarSdk.Asset, inputAmount:string, out
                     && balance.asset_code === outputAsset.code 
                     && balance.asset_issuer === outputAsset.issuer
                 ){
+                    console.log("asset found checking balances");
+                    console.log(balance);
                     let limit = parseFloat(balance.limit);
+                    console.log(limit);
                     lineExists = true;
-                    let balance = parseFloat(balance.balance);
-                    if(limit-balance < parseFloat(outputMin)+1000){
-                        trustLimit = parseFloat(outputMin)+(limit-balance)+1000;
+                    let assetQuantity = parseFloat(balance.balance);
+                    console.log(balance);
+                    if(limit-assetQuantity < parseFloat(outputMin)+1000){
+                        trustLimit = parseFloat(outputMin)+(limit-assetQuantity)+1000;
                         break;
                     }
                     else{
