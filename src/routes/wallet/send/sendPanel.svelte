@@ -99,7 +99,8 @@
             let result = new Error("something went wrong in sendXLM");
             try{
                 //this function creates an account if one dosen't exist already.
-                result = await callMetaStellar('transfer', {to:dest, amount:amount.toString()});
+                result = await callMetaStellar('transfer', {to:dest, amount:amount.toString(), testnet:$isTestnet});
+                console.log(result);
             }
             finally{
                 loading = false;
@@ -161,12 +162,17 @@
                     && balance.asset_issuer === asset.asset_issuer
                 )
                 {
-                    if(parseFloat(balance.limit) > parseFloat(balance.balance) + amount){
+                    if(parseFloat(balance.limit) >= parseFloat(balance.balance) + parseFloat(amount)){
                         optedIn = true;
-                        //createSendAssetOperation
-                        //addConsent
-                        
+                        console.log("already opted in");
+                        console.log('limit:', balance.limit);
+                        console.log('balance:', balance.balance);
+                        console.log("sendAmount", amount);
+
                     }
+                        console.log('limit:', balance.limit);
+                        console.log('balance:', balance.balance);
+                        console.log("sendAmount", amount);
                     
                     break;
                     
