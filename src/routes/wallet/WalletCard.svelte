@@ -1,4 +1,5 @@
 <script lang="ts">
+	
 	import { ChevronDownOutline, QrCodeOutline, PaperPlaneOutline } from 'flowbite-svelte-icons';
 	import { Circle2 } from 'svelte-loading-spinners';
 	import copy from 'copy-to-clipboard';
@@ -6,7 +7,7 @@
 	//import { getAirDropData, claimClaimableBalance } from './../../lib/services/index.ts';
 	import { Card } from '@metastellar/ui-library';
 	import { callMetaStellar } from '$lib/callMetaStellar';
-    import {dataPacket, isTestnet, currentView} from '$lib/wallet-store';
+    import {dataPacket, isTestnet, currentView, accountInfo} from '$lib/wallet-store';
     import { screen } from '$lib/ui-store';
     
    
@@ -98,17 +99,32 @@
         $currentView = view;
     }
 
-    function shortenAddress(address:string){
-        let length = address.length;
-        return address.slice(0,6)+"..."+address.slice(address.length-6, address.length);
+    
+
+    function updateMiniumBalnce(account){
+        try{
+            let subentry_count = parseInt(account.subentry_count);
+            let numSponsoring = parseInt(account.num_sponsoring);
+            let numSponsored = parseInt(account.num_sponsored);
+            let selling_liabilities = parseFloat(account.balances[account.balances.length-1].selling_liabilities);
+            let miniumBalance = (2+subentry_count+numSponsoring-numSponsored)*0.5 + selling_liabilities;
+            miniumBalanceDisp = 'required balance '+miniumBalance+' XLM';
+            return miniumBalance;
+        }
+        catch(e){
+            console.log("failed to calculate minium Balance");
+            miniumBalanceDisp = "";
+            return 0;
+        }
     }
 
     let accounts = $dataPacket.accounts;
 
     let balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
-    
+    let miniumBalanceDisp = "";
     $: balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
     $: iconSRC = getIdenticon($dataPacket.currentAddress);
+    $: miniumBalance = updateMiniumBalnce($accountInfo)
     
 </script>
 <br/>
@@ -211,6 +227,7 @@
 
         
         <P class='p-2' size={$screen > 820?'4xl':'xl'}>{balance} XLM</P>
+        <P size='sm'>{miniumBalanceDisp}</P>
     </div>
 
     <div style="display:flex; justify-content:center;">

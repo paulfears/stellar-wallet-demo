@@ -31,18 +31,18 @@
 
     function handleResize(){
         if(window.innerWidth > screens.md){
-            $screen = 'lg';
+           
             titles.docs = "Documentation";
         }
         if(window.innerWidth < screens.lg){
-            $screen = 'md';
+            
             titles.docs = "Docs";
         }
         if(window.innerWidth < screens.md){
-            $screen = 'sm';
+           
         }
         if(window.innerWidth < screens.sm){
-            $screen = 'xs';
+            
         }
     }
     onMount(() => {

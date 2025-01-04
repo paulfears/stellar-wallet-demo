@@ -41,7 +41,7 @@
 			
 			<li id="logo" data-uk-hover class="uk-width-auto">
 				<a href="/">
-					<img class="uk-logo uk-width-2-3" src={svgLogo} alt="Metastellar Logo"/>
+					<p>whitelabel</p>
 				</a>
 			</li>
 			<li data-uk-hover class="uk-width-1-6"><a href="/wallet">Wallet</a></li>
@@ -56,7 +56,7 @@
 		{:else}
 		<ul class="uk-navbar-nav">
 			<li id="logo" data-uk-hover class="uk-width-auto">
-				<img class="uk-logo uk-width-1-2 uk-logo" src={svgLogo} alt="Metastellar Logo"/>
+				<p>whitelabel</p>
 			</li>
 			<li data-uk-hover class="uk-width-1-2"><div><ConnectButton/></div></li>
 		</ul>

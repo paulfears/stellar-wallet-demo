@@ -44,7 +44,7 @@
 {/if}
 
 {#if ($connected)}
-<Button color="yellow" style="cursor:none" on:click={connectSnap} >
+<Button color="yellow"  style="cursor:none" on:click={connectSnap} >
     <img src={MMlogo} alt="Metamask Logo" class="w-6 h-6"/>
     Connected
 </Button>
