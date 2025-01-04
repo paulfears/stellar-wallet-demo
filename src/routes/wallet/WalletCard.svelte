@@ -133,7 +133,7 @@
                             <Tooltip>icon provided by lobstr.co</Tooltip>
                             <div style="display:flex; flex-direction:column;">
                                 <div style='display:flex; margin-left:5px;'>
-                                    <P size="2xl" style="margin:0px;">{$dataPacket.name}</P>
+                                    <P size="2xl" style="margin:0px; word-wrap:break-word;">{$dataPacket.name}</P>
                                     <span style="padding:6px 0px;"><ChevronDownOutline  /></span>
                                 </div>
                                 {#if $dataPacket.fedName} 
@@ -169,10 +169,11 @@
                         
                     </Dropdown>
                     <div style="display:flex; justify-content:center; ">
-                        {#if $screen > 820}
-                            <P size='xs'>{$dataPacket.currentAddress}</P>
+                        {#if $screen > 600}
+                            <P style='word-wrap:break-word;' size='xs'>{$dataPacket.currentAddress}</P>
                         {:else}
-                            <P size='xs'>{shortenAddress($dataPacket.currentAddress)}</P>
+                            <P style='word-wrap:break-word; border-radius:1em; width:60vw;' size='xs'>{$dataPacket.currentAddress}</P>
+                           <!-- <P size='xs'>{shortenAddress($dataPacket.currentAddress)}</P> -->
                         {/if}
                         <Button style="margin-left:5px; padding:5px!important;" color='light' size={'sm'} on:click={(e)=>{e.preventDefault(); e.stopPropagation();quickCopy($dataPacket.currentAddress)}}><svg xmlns="http://www.w3.org/2000/svg" height="10px" viewBox="0 -960 960 960" width="10px" fill="#5f6368"><path d="M360-240q-33 0-56.5-23.5T280-320v-480q0-33 23.5-56.5T360-880h360q33 0 56.5 23.5T800-800v480q0 33-23.5 56.5T720-240H360Zm0-80h360v-480H360v480ZM200-80q-33 0-56.5-23.5T120-160v-560h80v560h440v80H200Zm160-240v-480 480Z"/></svg></Button>
                     </div>
@@ -189,7 +190,7 @@
                 </div>
             </div>
             
-            <div class={$screen < 500?'flex-row mt-4':'flex-col'} style="justify-content:space-around;">
+            <div class={$screen < 745?'flex-row mt-4':'flex-col'} style="justify-content:space-around;">
                 <Button on:click={flipNetwork} color="light" class="relative" size="sm" style="height:40px;">
                     Notifications
                     <span class="sr-only">Network Indicator</span>
