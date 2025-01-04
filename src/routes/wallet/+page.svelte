@@ -2,17 +2,18 @@
 	
 	import ConnectDisp from '$lib/components/connectDisp/ConnectDisp.svelte';
     import {Card} from '@metastellar/ui-library';
-    import {Chasing} from 'svelte-loading-spinners'
-    import copy from "copy-to-clipboard";
-    import {connected, dataPacket, isTestnet} from '$lib/wallet-store';
-	import {Toast as toast} from "$lib/utils"
-    import SendXML from '../components/XML/SendXml.svelte';
-    import { Button } from 'flowbite-svelte';
+    import {Circle2} from 'svelte-loading-spinners'
+    import {connected, dataPacket, isTestnet, currentView} from '$lib/wallet-store';
+	
+    
+    
     import AssetsPanel from './assets/AssetsPanel.svelte';
     import WalletCard from './WalletCard.svelte';
+    import SendPanel from './send/sendPanel.svelte';
     import Transactions from './transactions.svelte';
+    import SwapPanel from './swap/swapPanel.svelte';
 
-    export let currentView = "sendXLM";
+    
 
 //   let xlmBalance:number = 0;
     // async function getWalletBallance() {
@@ -33,50 +34,38 @@
 
 
     //Fund the testnet Account if not Funded
-
+    $: $currentView = $currentView;
 </script>
 {#if $connected}
     {#if $dataPacket.currentAddress !== "null"}
         <div>
-            <div id="midContainer"  class="uk-container">
+            <div  class="uk-container">
                 <WalletCard/>
                 
                     
-                    <button on:click={()=>{setView('sendXLM')}} >
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'sendXLM'}>
-                            <span>Send XLM</span>
-                        </Card>
-                    </button>
-                    
-                    
-                    <button on:click={()=>{setView('assets')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'assets'} >
-                            Assets
-                        </Card>
-                    </button>
-                    <button on:click={()=>{setView('transactions')}}>
-                        <Card class="py-4 lg:px-12 min-h-[80px] justify-center" shadow={currentView !== 'transactions'} >
-                            Transaction explorer
-                        </Card>
-                    </button>
                 
                 
                 <div class="mt-2">
-                    {#if currentView == 'sendXLM'}
-                        <SendXML/>
-                    {:else if currentView == 'assets'}
+                    {#if $currentView == 'assets'}
                         <AssetsPanel/>
-                    {:else if currentView == 'transactions'}
+                    {:else if $currentView == 'transactions'}
                         <Transactions/>
+                    {:else if $currentView == 'send'}
+                        <SendPanel/>
+                    {:else if $currentView == 'swap'}
+                        <SwapPanel/>
                     {/if}
                 </div>     
             </div>
         </div>
     {:else} <!--Connected but datapacket is still not loaded-->
         
-        <div style="margin-top:20%; display:flex; width:100%; height:100%; justify-content:center;">    
-            <Chasing/>
-        </div>  
+    <div style="display:flex; height:100%; transform:translateY(50%); text-align:center; align-content:center; flex-direction:column; justify-content:center;">
+        <p>Connecting to MetaMask</p>
+        <div style="display:flex; justify-content:center; padding:30px; margin:auto;">
+        <Circle2 size={100}/>
+        </div>
+    </div>
     {/if}
 {/if}
 

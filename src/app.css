@@ -1,3 +1,6 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+.focus-within\:ring-gray-200:focus-within{
+    --tw-ring-opacity: 0 !important;
+}
