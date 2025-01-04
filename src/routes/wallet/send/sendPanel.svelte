@@ -2,18 +2,21 @@
     import {isTestnet, dataPacket, type walletAsset} from '$lib/wallet-store';
     import * as StellarSdk from '@stellar/stellar-sdk';
     import {callMetaStellar} from '$lib/callMetaStellar';
-    import {Input, Dropdown, DropdownItem, Button, P, DropdownHeader, DropdownDivider} from 'flowbite-svelte';
+    import {Input, Dropdown, DropdownItem, Button, P, DropdownHeader, DropdownDivider, Modal} from 'flowbite-svelte';
     import { ChevronDownOutline } from 'flowbite-svelte-icons';
-    import { balance } from '../../../store';
+    import type { promises } from 'dns';
+    
 
     let destination = '';
-    let assetAmount = 0;
+    let assetAmount = '';
 
     function createClaimableBalance(address:string, asset:StellarSdk.Asset, amount:string) {
         
         
       
-        
+        console.log(address);
+        console.log(asset);
+        console.log(amount);
         // Recipient's public key (replace with recipient's public key)
         const recipientId = address;
 
@@ -23,7 +26,7 @@
             
             // Create a simple claimable balance that can be claimed at any time
             const claimableBalanceOpereation = StellarSdk.Operation.createClaimableBalance({
-                amount: amount, // Amount in XLM
+                amount: String(amount).toString(), // Amount in XLM
                 asset: asset, // Using native XLM asset
                 claimants: [
                     new StellarSdk.Claimant(
@@ -58,6 +61,29 @@
 
     let loadingMsg = "";
     let loading = false;
+
+    let openCreateAccountConsent = false;
+    
+    let resolveCreateAccountConsent:Function;
+
+    let openCreateClaimableBalanceConsent = false;
+    
+    let resolveClaimableBalanceConsent:Function;
+
+    async function awaitConsent(screen:'createAccount'|'claimableBalance'){
+        if(screen === 'createAccount'){
+            return new Promise((resolve, reject)=>{
+                openCreateAccountConsent = true;
+                resolveCreateAccountConsent = resolve;
+            });
+        }
+        if(screen === 'claimableBalance'){
+            return new Promise((resolve, reject)=>{
+                openCreateClaimableBalanceConsent = true;
+                resolveClaimableBalanceConsent = resolve;
+            })
+        }
+    }
     async function sendAsset(){
         // TEST address GBUILN7TAGOJ4OPTJMYGTVAOKIBAMSW4KYKNZPKQWQBVKBRVVDOREVEW
         loadingMsg = 'creating transaction';
@@ -110,6 +136,10 @@
         catch(e:any){
             if(e.toString() === 'NotFoundError: Not Found'){
                 //create account operation
+                let consent = await awaitConsent('createAccount');
+                if(!consent){
+                    return false;
+                }
                 transaction.addOperation(StellarSdk.Operation.createAccount({
                     destination: dest,
                     startingBalance: "10" // Amount of XLM to fund the account with
@@ -151,12 +181,18 @@
         }
         else if(!optedIn){
             //TODO: add consent screen
-
+            let consent = await awaitConsent('claimableBalance');
+            if(!consent){
+                return false;
+            }
             const claimableBalanceOp = createClaimableBalance(dest, new StellarSdk.Asset(asset.asset_code, asset.asset_issuer), amount.toString());
             transaction.addOperation(claimableBalanceOp);
         }
 
-        
+        transaction.setTimeout(180);
+        const txnXDR = transaction.build().toXDR();
+        let result = await callMetaStellar('signAndSubmitTransaction', {transaction:txnXDR, testnet:$isTestnet});
+        console.log(result);
 
 
     }
@@ -174,6 +210,19 @@
         };
     }
 </script>
+<Modal open={openCreateAccountConsent} >
+    <p>Create Account</p>
+    <Button color='light' on:click={()=>{openCreateAccountConsent=false; resolveCreateAccountConsent(true)}}>Yes</Button>
+    <Button color='light' on:click={()=>{openCreateAccountConsent=false; resolveCreateAccountConsent(false)}}>no</Button>
+</Modal>
+
+<Modal open={openCreateClaimableBalanceConsent} >
+    <p>Recipient not opted in</p>
+    <hr/>
+    <p>The recipient account does not have a trustline to this asset. Would you like to create a claimable balance instead?</p>
+        <Button color='yellow' on:click={()=>{openCreateClaimableBalanceConsent = false; resolveClaimableBalanceConsent(true)}}>Yes</Button>
+        <Button color='green' on:click={()=>{openCreateClaimableBalanceConsent = false; resolveClaimableBalanceConsent(false)}}>no</Button>
+</Modal>
 <div class='shadow-card'>
     <h3 class="mb-4 font-bold text-2xl">Send</h3>
     {#if currentAsset !== undefined}
@@ -202,7 +251,7 @@
                         {/each}
                     {/if}
                 </Dropdown>
-                <Input type='number' placeholder='amount'/>
+                <Input bind:value={assetAmount} placeholder='amount'/>
             </div>
             {#if currentAsset.asset_issuer !== undefined && currentAsset.asset_issuer !== 'native'}
             <P style="padding-left:0.625rem;" size='xs'>{currentAsset.asset_issuer}</P>

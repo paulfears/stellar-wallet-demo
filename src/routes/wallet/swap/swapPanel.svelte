@@ -231,9 +231,11 @@ function generateSelectAsset(asset:walletAsset){
     <p>Output Asset</p>
     <AssetSelect bind:selectedAsset={outputAsset} bind:network={network}/>
     <div style="display:flex">
-        <p>{outputAmount===null?"no liquidity":outputAmount+" "+outputAsset.code} </p>
+        <p>{outputAmount===null?"":outputAmount+" "+outputAsset.code} </p>
         {#if calculatingPrice}<Circle2 size="25"/>{/if}
     </div>
     <br/>
-    <Button on:click={swap} color='light'>Swap</Button>
+    <div style="display:flex; justify-content:center;">
+        <Button on:click={swap} style="width:150px;" color='blue'>Swap</Button>
+    </div>
 </div>
