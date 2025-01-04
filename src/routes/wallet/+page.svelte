@@ -5,7 +5,7 @@
     import {Circle2} from 'svelte-loading-spinners'
     import {connected, dataPacket, isTestnet, currentView} from '$lib/wallet-store';
 	
-    import SendXML from '../components/XML/SendXml.svelte';
+    
     
     import AssetsPanel from './assets/AssetsPanel.svelte';
     import WalletCard from './WalletCard.svelte';
@@ -46,9 +46,7 @@
                 
                 
                 <div class="mt-2">
-                    {#if $currentView == 'sendXLM'}
-                        <SendXML/>
-                    {:else if $currentView == 'assets'}
+                    {#if $currentView == 'assets'}
                         <AssetsPanel/>
                     {:else if $currentView == 'transactions'}
                         <Transactions/>

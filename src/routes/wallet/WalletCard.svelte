@@ -176,7 +176,7 @@
                 <Indicator color="green" border size="lg" placement="top-right" class="text-xs font-bold"></Indicator>
                 {/if}
                 {#if !$isTestnet}
-                <Indicator color="orange" border size="lg" placement="top-right" class="text-xs font-bold"></Indicator>
+                <Indicator color="yellow" border size="lg" placement="top-right" class="text-xs font-bold"></Indicator>
                 {/if}
             </Button>
         </div>
@@ -189,9 +189,6 @@
     <div style="display:flex;">
         <Button color='light' style="border:none;" shadow={$currentView !== 'send'} on:click={()=>{setView('send')}} >
                Send
-        </Button>
-        <Button color='light' style="border:none;" shadow={$currentView !== 'sendXLM'} on:click={()=>{setView('sendXLM')}} >
-            Send XLM
         </Button>
         
         
