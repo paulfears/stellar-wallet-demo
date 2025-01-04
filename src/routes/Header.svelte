@@ -1,22 +1,35 @@
 <script lang='ts'>
 	import svgLogo from '$lib/video/metastellar_Logo.svg';
-	import ConnectButton from '$lib/components/connectButton.svelte';
 	import {connected} from '$lib/wallet-store';
     import {Button} from 'flowbite-svelte';
-
+	import {screen} from '$lib/ui-store';
+	import {onMount} from 'svelte';
+	import ConnectButton from '$lib/components/connectButton.svelte';
 	
 	
 	
 	let burger = false;
-	function handleResize(){
-		if(window.innerWidth<768){
+	
+
+	let screens = {
+        lg: 1200,
+        md: 992,
+        sm: 820,
+        xs: 576
+    }
+
+    function handleResize(){
+        $screen = window.innerWidth;
+		if(window.innerWidth < screens.md){
 			burger = true;
 		}
 		else{
 			burger = false;
 		}
-	
-	}
+    }
+    onMount(() => {
+        handleResize();
+    });
 	
 </script>
 <svelte:window on:resize={handleResize} />
@@ -35,12 +48,8 @@
 			<li data-uk-hover class="uk-width-1-6"><a href="/faq">FAQ</a></li>
 			<li data-uk-hover class="uk-width-1-6"><a href="/docs">Docs</a></li>
 			<li data-uk-hover class="uk-width-1-6">
-				<br/>
-				{#if !($connected)}
-					<ConnectButton/>
-				{:else}
-					<Button color="yellow" >Connected</Button>
-				{/if}
+			<br/>
+			<ConnectButton/>
 			</li>
 		</ul>
 

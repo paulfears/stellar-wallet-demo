@@ -10,6 +10,7 @@
 
 
     import {connected, dataPacket, isTestnet} from '$lib/wallet-store';
+    import MMlogo from '$lib/images/MMlogo.png';
     
     
     
@@ -36,13 +37,17 @@
     
 </script>
 {#if !($connected)}
-<Button color="light" on:click={connectSnap} src={ConnectImg}>Connect</Button>
-<Modal title="Flask Not Detected" bind:open={flaskNotDetected} autoclose>
-    <p style="font-size:x-large;">This Demo Requires Metamask Flask</p>
-    <hr/>
-    <p>Though it will be on standard metamask before too long</p>
-    <p>Install flask here: <a href="https://metamask.io/flask/">https://metamask.io/flask/</a></p>
-</Modal>
+<Button color="light" on:click={connectSnap} >
+    <img src={MMlogo} alt="Metamask Logo" class="w-6 h-6"/>
+    Connect
+</Button>
+{/if}
+
+{#if ($connected)}
+<Button color="yellow" style="cursor:none" on:click={connectSnap} >
+    <img src={MMlogo} alt="Metamask Logo" class="w-6 h-6"/>
+    Connected
+</Button>
 {/if}
 <style>
 
