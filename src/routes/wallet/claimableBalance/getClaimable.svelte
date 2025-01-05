@@ -4,6 +4,7 @@ import { Button, P } from 'flowbite-svelte';
 //https://horizon-testnet.stellar.org/claimable_balances?claimant=GBUILN7TAGOJ4OPTJMYGTVAOKIBAMSW4KYKNZPKQWQBVKBRVVDOREVEW
 import { callMetaStellar } from '$lib/callMetaStellar';
 import { dataPacket, isTestnet} from '$lib/wallet-store';
+import {Decimal} from 'decimal.js';
 
 import * as StellarSDK from '@stellar/stellar-sdk';
 export let claimableBalance;
@@ -29,15 +30,50 @@ async function claim(){
 
     let server = new StellarSDK.Horizon.Server(url);
     let account = await server.loadAccount($dataPacket.currentAddress);
-
     let tx = new StellarSDK.TransactionBuilder(account, { fee: StellarSDK.BASE_FEE })
-    .addOperation(claimBalance)
+    console.log("checking trustlines");
+    let trustLimit = new Decimal(0);
+    let trustNeeded = new Decimal(amount);
+    let trustGood = false;
+    for(let i = 0; i<account.balances.length; i++){
+        let assetInfo = account.balances[i]
+        let balance = new Decimal(assetInfo.balance);
+        if(assetInfo.asset_code === code && assetInfo.asset_issuer === issuer){
+            trustLimit = new Decimal(assetInfo.limit);
+            let remaining = trustLimit.sub(balance);
+            if(remaining.greaterThanOrEqualTo(amount)){
+                console.log("trustline found");
+                trustGood = true;
+                break;
+            }
+            else{
+                console.log("trustline found but not enough limit");
+                trustGood = false;
+                trustNeeded = trustNeeded.sub(remaining);
+                break;
+            }
+            
+        }
+    }
+    if(!trustGood){
+        console.log("trustline not found");
+        let changeTrust = StellarSDK.Operation.changeTrust({
+            asset: asset,
+            limit: trustLimit.add(trustNeeded).toString()
+        });
+        tx.addOperation(changeTrust);
+    }
+
+    
+    const xdr =tx.addOperation(claimBalance)
     .setNetworkPassphrase( $isTestnet?StellarSDK.Networks.TESTNET:StellarSDK.Networks.PUBLIC)
     .setTimeout(180)
-    .build();
+    .build()
+    .toXDR();
 
-    let response = await callMetaStellar('signAndSubmitTransaction', {transaction:tx.toXDR(), testnet:$isTestnet});
-    await updateAccountInfo();
+    let response = await callMetaStellar('signAndSubmitTransaction', {transaction:xdr, testnet:$isTestnet});
+    $dataPacket = await callMetaStellar('getDataPacket', {});
+    updateAccountInfo();
     loading = false;
     console.log(response);
 }
@@ -45,15 +81,24 @@ async function claim(){
 </script>
 
 <div class='shadow-card' style="padding:5px; margin:0px; display:flex;">
-    <div style="display:flex; flex-direction:column;">
-        <P>Claimable Balance</P>
-        <div class='simple-card' style="margin:2px; padding:0.5em;">
-            <P>{amount} {code}</P>
-            <P size="xs">{issuer}</P>
+    {#if loading}
+        <div style="display:flex; flex-direction:column; margin:auto;">
+            <P>Loading...</P>
         </div>
-        <P size="xs">from: {sender}</P>
-    </div>
-    
+    {:else}
+        <div style="display:flex; flex-direction:column;">
+            <P>Claimable Balance</P>
+            <div class='simple-card' style="margin:2px; padding:0.5em;">
+                <P>{amount} {code}</P>
+                <P size="xs">{issuer}</P>
+            </div>
+            <P size="xs">from: {sender}</P>
+        </div>
         <Button color="blue" style="height:45px; margin:auto;" on:click={claim}>Claim</Button>
+    {/if}
     
 </div>
+
+<style>
+    
+</style>

@@ -51,7 +51,6 @@
 		"prismjs": "^1.29.0",
 		"stellar-identicon-js": "^1.0.0",
 		"stellar-sdk": "^12.2.0",
-		"stellar-snap": "file:..",
 		"svelte-ace": "^1.0.21",
 		"svelte-forms": "^2.3.1",
 		"svelte-forms-lib": "^2.0.1",
