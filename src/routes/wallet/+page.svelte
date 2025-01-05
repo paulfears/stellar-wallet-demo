@@ -1,11 +1,11 @@
 <script lang="ts">
-	import { MiniumBalance } from './../../lib/wallet-store.ts';
+	import { updateWalletData } from '$lib/utils';
 	
 	
 	import ConnectDisp from '$lib/components/connectDisp/ConnectDisp.svelte';
     import {Card} from '@metastellar/ui-library';
     import {Circle2} from 'svelte-loading-spinners'
-    import {connected, dataPacket, isTestnet, currentView, lastUpdate, accountInfo, claimableBalances} from '$lib/wallet-store';
+    import {connected, dataPacket, isTestnet, currentView, lastUpdate, accountInfo, claimableBalances, notifications} from '$lib/wallet-store';
 	import * as StellarSdk from '@stellar/stellar-sdk';
     
     
@@ -16,35 +16,13 @@
     import SwapPanel from './swap/swapPanel.svelte';
     import { callMetaStellar } from '$lib/callMetaStellar';
     import { onMount } from 'svelte';
+    import { updateAccountInfo } from './updateData';
     
 
     
 
 
-    async function updateAccountInfo(){
-        console.log("updateInfoCalled");
-        if($connected){
-            let url = $isTestnet?'https://horizon-testnet.stellar.org':'https://horizon.stellar.org';
-            if($connected){
-                console.log("updating wallet data");
-                $dataPacket = await callMetaStellar('getDataPacket', {testnet:($isTestnet)});
-                let server = new StellarSdk.Horizon.Server(url);
-                let account = await server.loadAccount($dataPacket.currentAddress);
-                console.log(account);
-                $claimableBalances = await server.claimableBalances().claimant($dataPacket.currentAddress).call();
-                console.log(claimableBalances);
-                $accountInfo = account;
-                
-                //2 base reserves + numSubEntries + numSponsoring - numSponsored) * baseReserve + liabilities.selling
-                
-                
-            }
-            $lastUpdate = new Date().getTime();
-            
-        }
-        
-    }
-
+    
     function accountInfoTimer(){
         console.log("timer called");
         console.log($lastUpdate);
@@ -67,10 +45,12 @@
 
     //Fund the testnet Account if not Funded
     $: $currentView = $currentView;
+    $: $connected && updateAccountInfo();
 </script>
 
 
 {#if $connected}
+    
     {#if $dataPacket.currentAddress !== "null"}
         <div>
             <div  class="uk-container">

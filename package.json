@@ -40,6 +40,7 @@
 		"ace-builds": "^1.36.2",
 		"codemirror": "^6.0.1",
 		"copy-to-clipboard": "^3.3.3",
+		"decimal.js": "^10.4.3",
 		"dotenv": "^16.4.5",
 		"flowbite-svelte": "^0.46.16",
 		"flowbite-svelte-icons": "^1.6.1",

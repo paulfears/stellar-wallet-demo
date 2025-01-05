@@ -7,7 +7,7 @@
 	//import { getAirDropData, claimClaimableBalance } from './../../lib/services/index.ts';
 	import { Card } from '@metastellar/ui-library';
 	import { callMetaStellar } from '$lib/callMetaStellar';
-    import {dataPacket, isTestnet, currentView, accountInfo} from '$lib/wallet-store';
+    import {dataPacket, isTestnet, currentView, accountInfo, notifications} from '$lib/wallet-store';
     import { screen } from '$lib/ui-store';
     
    
@@ -15,6 +15,8 @@
     import {P, Button, Indicator, Tooltip, Dropdown, DropdownItem, DropdownHeader, Avatar} from "flowbite-svelte";
     import {onMount} from 'svelte';
     import createStellarIdenticon from "./stellarIcons";
+    import Notifcations from './Notifcations.svelte';
+    import { updateAccountInfo } from './updateData';
     
     let iconSRC = `https://id.lobstr.co/${$dataPacket.currentAddress}.png`;
     let loading = false;
@@ -70,7 +72,9 @@
                 loading = true;
                 await callMetaStellar('setCurrentAccount', {address:address});
                 loadingMessege = 'refreshing Data';
+                updateAccountInfo();
                 $dataPacket = await callMetaStellar('getDataPacket', {});
+                
             }
             finally{
                 loading = false;
@@ -95,10 +99,6 @@
         }
     });
     
-    function setView(view:string){
-        $currentView = view;
-    }
-
     
 
     function updateMiniumBalnce(account){
@@ -118,18 +118,28 @@
         }
     }
 
+    async function setView(view:string){
+        if($currentView === view){
+            $currentView = 'none';
+        }
+        else{
+            $currentView = view;
+        }
+    }
+
     let accounts = $dataPacket.accounts;
 
     let balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
     let miniumBalanceDisp = "";
+    let openNotications = false;
     $: balance = $isTestnet? ($dataPacket).testnetXLMBalance : ($dataPacket).mainnetXLMBalance;
     $: iconSRC = getIdenticon($dataPacket.currentAddress);
-    $: miniumBalance = updateMiniumBalnce($accountInfo)
+    $: updateMiniumBalnce($accountInfo)
     
 </script>
 <br/>
 <br/>
-
+<Notifcations bind:notifications={$notifications} bind:opened={openNotications}/>
 <Card style="margin-bottom:2em;" shadow>
     {#if loading}
     <div style="display:flex; text-align:center; align-content:center; flex-direction:column; justify-content:center;">
@@ -145,7 +155,7 @@
                 <div class='flex-col'>
                     <Button color="light" style=" text-align:left; " >
                         <div  style="display:flex; width:100%; justify-content:start; ">
-                            <Avatar size='md' rounded dot={$isTestnet?{ color: 'green', size: 'lg', placement: 'top-right' }:{ color: 'yellow', size: 'lg', placement: 'top-right' }} style="padding:5px;" on:click={()=>quickCopy($dataPacket.currentAddress)} alt={"addressIcon"} width="35" height="35" src={iconSRC}/>
+                            <Avatar size='md' rounded dot={$isTestnet?{ color: 'green', size: 'lg', placement: 'top-right' }:{ color: 'yellow', size: 'lg', placement: 'top-right' }} style="padding:5px;" on:click={()=>quickCopy($dataPacket.currentAddress)} alt={"addressIcon"} src={iconSRC}/>
                             <Tooltip>icon provided by lobstr.co</Tooltip>
                             <div style="display:flex; flex-direction:column;">
                                 <div style='display:flex; margin-left:5px;'>
@@ -207,11 +217,11 @@
             </div>
             
             <div class={$screen < 745?'flex-row mt-4':'flex-col'} style="justify-content:space-around;">
-                <Button on:click={flipNetwork} color="light" class="relative" size="sm" style="height:40px;">
+                <Button on:click={()=>openNotications=true} color="light" class="relative" size="sm" style="height:40px;">
                     Notifications
                     <span class="sr-only">Network Indicator</span>
                     <Indicator color="green" border size="xl" placement="top-right">
-                        <span class="text-white text-xs font-bold">8</span>
+                        <span class="text-white text-xs font-bold">{$notifications.length}</span>
                     </Indicator>
                 </Button>
                 <Button on:click={flipNetwork} color="light" class="relative" size="sm" style="height:40px;">
@@ -224,13 +234,14 @@
 
         </div>
         
+ 
 
         
         <P class='p-2' size={$screen > 820?'4xl':'xl'}>{balance} XLM</P>
         <P size='sm'>{miniumBalanceDisp}</P>
     </div>
 
-    <div style="display:flex; justify-content:center;">
+    <div style="display:flex; justify-content:start; gap:2px;">
         <Button color='light' style="border:none;" shadow={$currentView !== 'send'} on:click={()=>{setView('send')}} >
                Send
         </Button>
