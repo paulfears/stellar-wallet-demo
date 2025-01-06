@@ -139,8 +139,10 @@
 </script>
 <br/>
 <br/>
+
 <Notifcations bind:notifications={$notifications} bind:opened={openNotications}/>
-<Card style="margin-bottom:2em;" shadow>
+<div style="display:flex; flex-wrap:wrap; gap:10px;">
+<div class='shadow-card'>
     {#if loading}
     <div style="display:flex; text-align:center; align-content:center; flex-direction:column; justify-content:center;">
         <p>{loadingMessege}</p>
@@ -208,39 +210,51 @@
                     <Button on:click={openSendXLM} class="!p-2" color='light'>
                         <PaperPlaneOutline style="transform:rotate(45deg);"/>
                     </Button>
-                    <Tooltip placement='right' type='light'>send xlm</Tooltip>
+                    <Tooltip placement='left' type='light'>send xlm</Tooltip>
                     <Button on:click={showAddress}  class="!p-2" color='light'>
                         <QrCodeOutline/>
                     </Button>
-                    <Tooltip placement='right' type='light'>receive</Tooltip>
+                    <Tooltip placement='bottom' type='light'>receive</Tooltip>
                 </div>
             </div>
             
-            <div class={$screen < 745?'flex-row mt-4':'flex-col'} style="justify-content:space-around;">
-                <Button on:click={()=>openNotications=true} color="light" class="relative" size="sm" style="height:40px;">
-                    Notifications
-                    <span class="sr-only">Network Indicator</span>
-                    <Indicator color="green" border size="xl" placement="top-right">
-                        <span class="text-white text-xs font-bold">{$notifications.length}</span>
-                    </Indicator>
-                </Button>
-                <Button on:click={flipNetwork} color="light" class="relative" size="sm" style="height:40px;">
-                    {$isTestnet?"testnet":"mainnet"}
-                    <span class="sr-only">Network Indicator</span>
-                    
-                </Button>
 
-            </div>
 
         </div>
         
  
 
         
-        <P class='p-2' size={$screen > 820?'4xl':'xl'}>{balance} XLM</P>
-        <P size='sm'>{miniumBalanceDisp}</P>
+        <P size={$screen > 820?'4xl':'xl'}>{balance} XLM</P>
+        {#if balance === '0'}
+            <P size='sm'>uncreated account</P>
+        {:else}
+            <P size='sm'>{miniumBalanceDisp?miniumBalanceDisp:'calculating required balance'}</P>
+        {/if}
+        
     </div>
+    {/if}
+</div>
 
+<div class='shadow-card'>
+    <div class={$screen < 745?'flex-row mt-4':'flex-col'} style="justify-content:space-around;">
+        <Button on:click={()=>openNotications=true} color="light" class="relative" size="sm" style="height:40px;">
+            Notifications
+            <span class="sr-only">Network Indicator</span>
+            <Indicator color="green" border size="xl" placement="top-right">
+                <span class="text-white text-xs font-bold">{$notifications.length}</span>
+            </Indicator>
+        </Button>
+        <Button on:click={flipNetwork} color="light" class="relative" size="sm" style="height:40px;">
+            {$isTestnet?"testnet":"mainnet"}
+            <span class="sr-only">Network Indicator</span>
+            
+        </Button>
+
+    </div>
+</div>
+
+<div class='shadow-card' style="width:80vw;">
     <div style="display:flex; justify-content:start; gap:2px;">
         <Button color='light' style="border:none;" shadow={$currentView !== 'send'} on:click={()=>{setView('send')}} >
                Send
@@ -259,9 +273,8 @@
             
         </Button>
     </div>
-    {/if}
-</Card>
-
+</div>
+</div>
 <style>
     .flex-col{
         display:flex;
