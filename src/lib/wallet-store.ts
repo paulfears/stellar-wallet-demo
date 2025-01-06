@@ -60,4 +60,9 @@ export const dataPacket:Writable<DataPacket> = writable(nullDataPacket);
 export const isTestnet:Writable<boolean> = writable(true);
 export const connected:Writable<boolean> = writable(false);
 
-export const currentView:Writable<string> = writable("send");
+export const currentView:Writable<string> = writable("none");
+
+export const lastUpdate:Writable<number> = writable(0);
+export const claimableBalances:Writable<any> = writable(null);
+export const accountInfo:Writable<any> = writable(null);
+export const notifications:Writable<any[]> = writable([]);

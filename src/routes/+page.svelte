@@ -1,4 +1,5 @@
 <script lang='ts'>
+	import { screen } from '$lib/ui-store';
     import {Card, NftPoster, YoutubePoster} from '@metastellar/ui-library';
     import { onMount } from "svelte";
 
@@ -9,6 +10,7 @@
     import DocsIcon from '$lib/images/front-icons/docs.png';
     import FAQIcon from '$lib/images/front-icons/faq.png';
     import labIcon from '$lib/images/front-icons/lab.png'; 
+    
 
 
     const mouse_movement_record_send_url = env.VITE_MOUSE_MOVEMENT_DATA_SEND_URL;
@@ -19,7 +21,7 @@
         docs: "Documentation",
         chat: "Chat"
     }
-    let screen:'lg'|'md'|'sm'|'xs' = 'lg';
+    
     let screens = {
         lg: 1200,
         md: 992,
@@ -29,18 +31,18 @@
 
     function handleResize(){
         if(window.innerWidth > screens.md){
-            screen = 'lg';
+           
             titles.docs = "Documentation";
         }
         if(window.innerWidth < screens.lg){
-            screen = 'md';
+            
             titles.docs = "Docs";
         }
         if(window.innerWidth < screens.md){
-            screen = 'sm';
+           
         }
         if(window.innerWidth < screens.sm){
-            screen = 'xs';
+            
         }
     }
     onMount(() => {

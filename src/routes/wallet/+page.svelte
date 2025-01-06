@@ -1,10 +1,12 @@
 <script lang="ts">
+	import { updateWalletData } from '$lib/utils';
+	
 	
 	import ConnectDisp from '$lib/components/connectDisp/ConnectDisp.svelte';
     import {Card} from '@metastellar/ui-library';
     import {Circle2} from 'svelte-loading-spinners'
-    import {connected, dataPacket, isTestnet, currentView} from '$lib/wallet-store';
-	
+    import {connected, dataPacket, isTestnet, currentView, lastUpdate, accountInfo, claimableBalances, notifications} from '$lib/wallet-store';
+	import * as StellarSdk from '@stellar/stellar-sdk';
     
     
     import AssetsPanel from './assets/AssetsPanel.svelte';
@@ -12,31 +14,43 @@
     import SendPanel from './send/sendPanel.svelte';
     import Transactions from './transactions.svelte';
     import SwapPanel from './swap/swapPanel.svelte';
+    import { callMetaStellar } from '$lib/callMetaStellar';
+    import { onMount } from 'svelte';
+    import { updateAccountInfo } from './updateData';
+    
 
     
 
-//   let xlmBalance:number = 0;
-    // async function getWalletBallance() {
-    //     let wallet = MetaStellarWallet.loadFromState($walletData);
-    //     let balance = await wallet.getBalance();
-    //     console.log("balance", balance);
-    //     let data = wallet.exportState();
-    //     walletData.set(data);
-    //     xlmBalance = balance;
-    //     return balance;
-    // }
+
     
-    const setView = (view:string) => {
-        currentView = view;
-        console.log('view ', currentView);
+    function accountInfoTimer(){
+        console.log("timer called");
+        console.log($lastUpdate);
+        try{
+            if(((new Date()).getTime())-$lastUpdate > 59_999){
+                updateAccountInfo();
+            }
+        }
+        finally{
+            setTimeout(accountInfoTimer, 60_000);
+        }
     }
-    
 
+    onMount(()=>{
+        console.log("page mounted")
+        $lastUpdate = new Date().getTime();
+        updateAccountInfo();
+        accountInfoTimer();
+    })
 
     //Fund the testnet Account if not Funded
     $: $currentView = $currentView;
+    $: $connected && updateAccountInfo();
 </script>
+
+
 {#if $connected}
+    
     {#if $dataPacket.currentAddress !== "null"}
         <div>
             <div  class="uk-container">
