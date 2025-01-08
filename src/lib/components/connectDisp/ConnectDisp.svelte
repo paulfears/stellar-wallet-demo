@@ -5,6 +5,7 @@
     import type {DataPacket} from '$lib/wallet-store';
 	import {callMetaStellar} from '$lib/callMetaStellar';
     
+    
 
     async function connect(){
         if(!$connected){
@@ -14,6 +15,7 @@
                 throw Error("failed to connect with metamask stellar snap");
                 return false; //whatever I don't trust spec
             }
+            console.log("getting Data Packet")
             $dataPacket = await callMetaStellar('getDataPacket', {testnet:$isTestnet});
         }
     }

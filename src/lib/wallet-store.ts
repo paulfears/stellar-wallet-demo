@@ -1,6 +1,6 @@
 import { writable } from "svelte/store";
 import type { Writable } from "svelte/store";
-
+import type {} from '@stellar/stellar-sdk';
 
 interface NativeBalance {
     balance:string,
@@ -56,6 +56,18 @@ export const nullDataPacket:DataPacket = {
     fedName:null
 }
 
+import * as StellarSDK from '@stellar/stellar-sdk';
+export interface txnData {
+    hash:string,
+    operations?:StellarSDK.Horizon.ServerApi.OperationRecord[],
+    effects?:StellarSDK.Horizon.ServerApi.EffectRecord[],
+    transactionData?:StellarSDK.Horizon.ServerApi.TransactionRecord,
+    isSigner?:boolean;
+}
+export interface txnStructure{
+    [transactionHash:string]:txnData
+}
+
 export const dataPacket:Writable<DataPacket> = writable(nullDataPacket);
 export const isTestnet:Writable<boolean> = writable(true);
 export const connected:Writable<boolean> = writable(false);
@@ -66,3 +78,4 @@ export const lastUpdate:Writable<number> = writable(0);
 export const claimableBalances:Writable<any> = writable(null);
 export const accountInfo:Writable<any> = writable(null);
 export const notifications:Writable<any[]> = writable([]);
+export const transactions:Writable<txnStructure> = writable({});

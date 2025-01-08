@@ -254,8 +254,8 @@
     </div>
 </div>
 
-<div class='shadow-card' style="width:80vw;">
-    <div style="display:flex; justify-content:start; gap:2px;">
+<div class='shadow-card' style="width:100%; ">
+    <div style="display:flex; justify-content:start; gap:2px; flex-wrap:wrap;">
         <Button color='light' style="border:none;" shadow={$currentView !== 'send'} on:click={()=>{setView('send')}} >
                Send
         </Button>

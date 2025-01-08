@@ -12,7 +12,7 @@
     import AssetsPanel from './assets/AssetsPanel.svelte';
     import WalletCard from './WalletCard.svelte';
     import SendPanel from './send/sendPanel.svelte';
-    import Transactions from './transactions.svelte';
+    import Transactions from './transactions/transactions.svelte';
     import SwapPanel from './swap/swapPanel.svelte';
     import { callMetaStellar } from '$lib/callMetaStellar';
     import { onMount } from 'svelte';
@@ -27,8 +27,10 @@
         console.log("timer called");
         console.log($lastUpdate);
         try{
-            if(((new Date()).getTime())-$lastUpdate > 59_999){
-                updateAccountInfo();
+            if($connected){
+                if(((new Date()).getTime())-$lastUpdate > 59_999){
+                    updateAccountInfo();
+                }
             }
         }
         finally{
@@ -75,7 +77,7 @@
     {:else} <!--Connected but datapacket is still not loaded-->
         
     <div style="display:flex; height:100%; transform:translateY(50%); text-align:center; align-content:center; flex-direction:column; justify-content:center;">
-        <p>Connecting to MetaMask</p>
+        <p>Loading wallet data</p>
         <div style="display:flex; justify-content:center; padding:30px; margin:auto;">
         <Circle2 size={100}/>
         </div>
