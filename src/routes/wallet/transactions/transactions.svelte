@@ -113,7 +113,7 @@
         let newFirstId = records[0].id;
         console.log(records);
         if(newFirstId === lastKnownTxnId){
-            console.log("new new transactions")
+            console.log("no new transactions")
             return;
         }
         else{
@@ -154,7 +154,7 @@
 
     onMount(async ()=>{
         //clearTxnCache(address, $isTestnet);
-        loadTransactions(address, $isTestnet);
+        loadTransactions($dataPacket.currentAddress, $isTestnet);
     })
 
     async function loadTransactions(address:string, isTestnet:boolean){
@@ -209,12 +209,3 @@
         <center>Account has not been created yet</center>
     {/if}
 </div>
-
-<!--
-<Card>
-<a href={stellarExpertLink} target='_blank'>open Stellar Expert   🡥</a>
-</Card>
-<Card>
-<a href={StellarChainLink} target='_blank'>open StellarChain.io    🡥</a>
-</Card>
--->

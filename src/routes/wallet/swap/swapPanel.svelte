@@ -1,5 +1,4 @@
 <script lang='ts'>
-	import { testnet } from './../../../store.ts';
 
 import * as StellarSdk from '@stellar/stellar-sdk';
 import { dataPacket, isTestnet, type walletAsset } from '$lib/wallet-store';
@@ -195,7 +194,7 @@ function generateSelectAsset(asset:walletAsset){
 
         <div style='display:flex;'>
             <Button color='light'>{currentAsset.asset_code} <ChevronDownOutline/></Button>
-            <Dropdown class="w-96 h-48 shadow overflow-y-auto" bind:open={dropdownOpen}>
+            <Dropdown placement='bottom-start' class="w-96 h-48 shadow overflow-y-auto" bind:open={dropdownOpen}>
                 {#if assets !== undefined}
                     <DropdownItem on:click={generateSelectAsset(assets[assets.length-1])}>
                         <P>{assets[assets.length-1].asset_code}</P>
