@@ -1,9 +1,12 @@
 <script lang='ts'>
 	import { isTestnet, dataPacket} from '$lib/wallet-store';
     import * as StellarSDK from '@stellar/stellar-sdk';
-    import { P, Button } from 'flowbite-svelte';
+    import { P, Button, Indicator, Tooltip } from 'flowbite-svelte';
     import { onMount } from 'svelte';
     import { Circle } from 'svelte-loading-spinners';
+    import TimeAgo from 'javascript-time-ago'
+    import en from 'javascript-time-ago/locale/en'
+
 
     import {ArrowDownToBracketOutline, PaperPlaneOutline} from 'flowbite-svelte-icons';
     
@@ -11,7 +14,11 @@
     export let txn:StellarSDK.Horizon.ServerApi.TransactionRecord;
     let operations:StellarSDK.Horizon.ServerApi.OperationRecord[] = [];
     let horizon = new StellarSDK.Horizon.Server($isTestnet?'https://horizon-testnet.stellar.org':'https://horizon.stellar.org');
-    
+    let timeStamp = new Date(txn.created_at);
+
+    TimeAgo.addLocale(en);
+    const timeAgo = new TimeAgo('en-US');
+
     function getEffects(){
     }
 
@@ -61,6 +68,28 @@
             </div>
             <P size='xs'>{txn.hash}</P>
         </div>
-        <a href={link} target='_blank'>Open Explorer</a>
+        <div style='display:flex; flex-direction:column;'>
+            <div style="display:flex;">
+                {#if txn.successful}
+                <Indicator style="margin:auto;" color='green'/>
+                <Tooltip>Transacation Successful</Tooltip>
+                {:else}
+                <Indicator style="margin:auto;" color='red'/>
+                <Tooltip>Transacation failed</Tooltip>
+                {/if}
+                <P size='sm' style="margin:auto;">{timeAgo.format(timeStamp)}</P>
+                <Tooltip>{timeStamp.toLocaleTimeString('en-US', {
+                    weekday: 'short', 
+                    year: 'numeric', 
+                    month: 'long', 
+                    day: 'numeric',
+                    hour: 'numeric', 
+                    minute: 'numeric', 
+                    second: 'numeric' 
+                  }
+                  )}</Tooltip>
+            </div>
+            <a href={link} target='_blank'>Open Explorer</a>
+        </div>
     </div>
 </div>

@@ -7,8 +7,10 @@
 	import { isTestnet, dataPacket } from '$lib/wallet-store';
     import { Button, Card } from 'flowbite-svelte';
 
-    
+    import TimeAgo from 'javascript-time-ago'
+    import en from 'javascript-time-ago/locale/en'
 
+    
     import TransactionContainer from './transactionContainer.svelte';
 
     import type { accountStructure, txnData } from './types';
@@ -140,10 +142,6 @@
 
     
 
-    let StellarChainNetwork = $isTestnet?'testnet.':'';
-    let StellarChainLink = `https://${StellarChainNetwork}stellarchain.io/accounts/${address}`;
-
-
 
     
 
@@ -152,7 +150,9 @@
         localStorage.removeItem(`cursor-${address}-${isTestnet?'testnet':'mainnet'}`);
     }
 
+    
     onMount(async ()=>{
+
         //clearTxnCache(address, $isTestnet);
         loadTransactions($dataPacket.currentAddress, $isTestnet);
     })
@@ -172,7 +172,9 @@
                     continue;
                 }
                 else{
-                    cacheTxnData(address, isTestnet, cursor as string, transactions);
+                    if(cursor){
+                        cacheTxnData(address, isTestnet, cursor, transactions);
+                    }
                     break;
                 }
             }
